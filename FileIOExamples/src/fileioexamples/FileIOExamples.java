@@ -14,6 +14,7 @@ import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.util.Random;
 
 public class FileIOExamples {
 
@@ -109,6 +110,59 @@ public class FileIOExamples {
             }
         }
 
+        Random random = new Random();
+
+        int numberOfNumbers = random.nextInt(100) + 1;
+
+        try {
+            DataOutputStream binaryOutputFile = new DataOutputStream(
+                    new BufferedOutputStream(
+                            new FileOutputStream("random.bin")));
+            
+            binaryOutputFile.writeInt(numberOfNumbers);
+            
+            for ( int value = 0; value < numberOfNumbers; value++ ){
+                binaryOutputFile.writeInt(random.nextInt(1000) + 1);
+            }
+            
+            binaryOutputFile.writeUTF("That's all folks!");
+            
+            binaryOutputFile.close();
+        } catch (IOException ex) {
+            System.out.println(ex);
+        }
+
+        binaryInputFile = new File("random.bin");
+
+        if (binaryInputFile.exists()) {
+            try {
+
+                DataInputStream binaryInput = new DataInputStream(
+                        new BufferedInputStream(
+                                new FileInputStream(binaryInputFile)));
+                
+                
+                // no loop, the files tells me how many values I should read
+                int numberOfNumbersToRead = binaryInput.readInt();
+                
+                System.out.println("There are " + numberOfNumbersToRead +
+                        " values to reads in this file...");
+                
+                for ( int value = 0; value < numberOfNumbersToRead; value++){
+                    int valueInFile = binaryInput.readInt();
+                    System.out.println(valueInFile);
+                }
+                
+                String endingMessage = binaryInput.readUTF();
+                System.out.println(endingMessage);
+                
+                binaryInput.close();
+                
+            } catch ( IOException ex){
+                System.out.println(ex);
+            }
+        }
+        
     }
 
 }
