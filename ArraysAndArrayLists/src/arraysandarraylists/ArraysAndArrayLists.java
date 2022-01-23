@@ -65,10 +65,10 @@ public class ArraysAndArrayLists {
 
         char currentPlayer = 'X';
 
-        int row = -1;
-        int column = -1;
-
         while (!gameOver(board)) {
+
+            int row = -1;
+            int column = -1;
 
             while (invalidRowOrColumn(row, column, board)) {
                 System.out.println(currentPlayer + "'s turn!");
